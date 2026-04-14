@@ -6,105 +6,102 @@ import java.util.ArrayList;
 public class Authorisation {
 	
 	//This will be my global variables
-	private String username = null;
+	private String UserName = null;
+	private String UserSurname = null;
 	private String userPassword = null;
+	private String userEmail =null;
+	
 	private ArrayList<String[]> arrUsers =null;
 
 	
-	public Authorisation(String username, String Password)
+	public Authorisation(String username,String USurname,String password, String UEmail)
 	{
 		//The user input will be stored in the global variables
-		this.username = username;
-		this.userPassword = Password;
+		this.UserName = username;
+		this.UserSurname = USurname;
+		this.userPassword = password;
+		this.userEmail =UEmail;
 		this.arrUsers = new ArrayList<>();
 	}
 	
-	public String registerUser(String username,String password)
+	public String registerUser()
 	{
-		//Check if the user input meets the minimum requirements
-		if(this.CheckUserName() && this.checkPasswordComplexity())
+	   
+		if(this.checkPasswordComplexity() && this.checkPersonalInfo()) //If successful.
 		{
-			String[] arrIndividualUser = {this.username,this.userPassword}; //Record the user info
-			this.arrUsers.add(arrIndividualUser); 
+			String[] Userobj = new String[5];  //The users information  
+			Userobj[0] = this.UserName;
+			Userobj[1] = this.UserSurname;
+			Userobj[2] = this.userEmail;
+			Userobj[3] = this.userPassword;
+			this.arrUsers.add(Userobj); //Save the information inside the list.
+			return "Successfully registered:" + UserName +" "+ this.UserSurname; 
 			
-			return  "welcome "+this.username;
-		}else 
-		{
-			return "Username or password incorect, please try again.";
+		}else {	
+		return  "Unsuccessful registration";
 		}
-				
 	}
 	
-	private boolean CheckUserName() //Check if the user name meet the requirements
+	private boolean checkPersonalInfo() //Check if the user name meet the requirements
 	{
-		int countNameLength = this.username.length(); //The total length of the user name.
-		if(username.contains("_") && countNameLength <5)
-		{
-			//user name contains an underscore and is no more than five characters long
-			System.out.println("Username sucessfully captured.");
-			return true;
-		}else
-		{
-			//error message if does not meet the requirements
-			System.err.println("Username is not correctly formatted; Please ensure that your username "
-					+ "contains an underscore and is no more tha five characters in length.");
-			return false;
-		}
+	     if(!this.UserName.isBlank() || !this.UserSurname.isBlank() || !this.userEmail.isBlank())
+	     {
+	    	 return true; //Check if the name, surname and email is blank.
+	     }else
+	     {
+	    	 return false; //Is empty or blank.
+	     }
 		
 	}
 	private boolean checkPasswordComplexity()
 	{
-		int countNameLength = this.userPassword.length(); //The total length of the user password.
-		int countIndex = 0; //initial index of the string;
 		
-		//Sign up conditions
-		boolean isCapitalFound =false;
-		boolean hasNumber =false; //Has numbers
-		boolean hasSpecialChar =false; //Has special characters
+		//The password conditions.
+		//1. Starts with a capital letter
+		//2. Has at least 5 characters
+		//3. Contains at least one number
+		//4. Contains at least one special character
 		
-		//loop until all characters in the string are checked
+		String pattern = "^[A-Z](?=.*\\d)(?=.*[^a-zA-Z0-9]).{4,}$";
+		//===============================================================//
 		
-		while(countIndex < countNameLength) 
+		if(this.userPassword.matches(pattern))
 		{
-			//contains a capital letter
-			char temPosition = userPassword.charAt(countIndex); //Current position of the character
-			if(Character.isUpperCase(temPosition) ==true) //if Capital letter is found
-			{
-				isCapitalFound =true;
-			}		
-			if(Character.isDigit(temPosition)==true) //if its a number.
-			{
-				hasNumber =true; //Number found
-				
-			}
-			if(Character.isLetterOrDigit(temPosition) ==true) //if its a number.
-			{
-				hasSpecialChar =true; //Number found	
-			}
-			
-			countIndex++; //move to next position.
-		}
-		
-		//Check if the password meets the the requirements combined.
-		if(countNameLength > 8 && isCapitalFound ==true && hasNumber ==true && hasSpecialChar ==true)
-		{ 
-			//Correct format
-			System.out.println("Password successfully captured.");
-			return true;
+			return true; //If it matches the requirements
 		}else
 		{
-			System.out.println("Password is not correctly formatted;/n please ensure that "
-					+ "the password contains at least eight charecters,a capital letter, "
-					+ "a number and a special charecter.");
-			return false;
+			return false; //Does not match.
 		}
 		
+	}
+	public boolean LoginUser(String email, String Password)
+	{
+		boolean userIsFound =false;
+		if(!this.arrUsers.isEmpty()) //Check if the are users inside the array.
+		{
+			for(String[] tempUser : this.arrUsers )
+			{
+				if(tempUser[2].equals(email) && tempUser[3].equals(Password)) //If the info matches
+				{
+					userIsFound =true;
+					System.out.println("Successfully login");
+					
+				}else //Does not match
+				{
+					System.out.println("Unsuccessfully login");
+					return userIsFound; //
+				}
+			}
+			
+		}
+		return userIsFound; //If no operation was performed
+
 	}
 	
 	//Return the user information
 	public String GetUserName()
 	{
-		return this.username;
+		return this.UserName;
 	}
 	public String GetPassword()
 	{
