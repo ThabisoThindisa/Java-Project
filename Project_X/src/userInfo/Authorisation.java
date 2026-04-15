@@ -17,11 +17,11 @@ public class Authorisation {
 	public Authorisation(String username,String USurname,String password, String UEmail)
 	{
 		//The user input will be stored in the global variables
-		this.UserName = username;
-		this.UserSurname = USurname;
-		this.userPassword = password;
-		this.userEmail =UEmail;
-		this.arrUsers = new ArrayList<>();
+		UserName = username;
+		UserSurname = USurname;
+		userPassword = password;
+		userEmail =UEmail;
+		arrUsers = new ArrayList<>();
 	}
 	
 	public String registerUser()
@@ -30,10 +30,10 @@ public class Authorisation {
 		if(this.checkPasswordComplexity() && this.checkPersonalInfo()) //If successful.
 		{
 			String[] Userobj = new String[5];  //The users information  
-			Userobj[0] = this.UserName;
-			Userobj[1] = this.UserSurname;
-			Userobj[2] = this.userEmail;
-			Userobj[3] = this.userPassword;
+			Userobj[0] = UserName;
+			Userobj[1] = UserSurname;
+			Userobj[2] = userEmail;
+			Userobj[3] = userPassword;
 			this.arrUsers.add(Userobj); //Save the information inside the list.
 			return "Successfully registered:" + UserName +" "+ this.UserSurname; 
 			
@@ -44,7 +44,7 @@ public class Authorisation {
 	
 	private boolean checkPersonalInfo() //Check if the user name meet the requirements
 	{
-	     if(!this.UserName.isBlank() || !this.UserSurname.isBlank() || !this.userEmail.isBlank())
+	     if(!UserName.isBlank() || !UserSurname.isBlank() || !userEmail.isBlank())
 	     {
 	    	 return true; //Check if the name, surname and email is blank.
 	     }else

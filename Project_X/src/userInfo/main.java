@@ -71,8 +71,8 @@ public class main {
 			
 		
 				user.LoginUser(LogName, LogPass);
-			
-			
+				nameIn.close();
+				passIn.close();
 			
 		}else if(Selectedchoice.equals("3")) //close the program
 		{
