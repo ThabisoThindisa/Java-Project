@@ -10,9 +10,8 @@ public class HandleMessage {
 	private String Cellcode = "";
 	private ArrayList<String> arrMessages; 
 	
-	public HandleMessage(String message, String CellNumber)
+	public HandleMessage(String CellNumber)
 	{
-		this.messageStr =message;
 		this.cellNumber =CellNumber;
 		this.arrMessages = new ArrayList<>();
 	}
@@ -32,12 +31,12 @@ public class HandleMessage {
 	{
 		
 		//Ensures that the recipient cell number is no more than 10 characters long.
-		if(this.cellNumber.length() <= 10 && this.cellNumber.startsWith(""))
+		if(this.cellNumber.length() == 10 && this.cellNumber.startsWith("0"))
 		{
-			return "";
+			return "The Number: "+ this.cellNumber + " is Stored.";
 		}else
 		{
-			return "";
+			return "Error: Incorrect Number format.";
 		}
 
 	}
@@ -49,6 +48,7 @@ public class HandleMessage {
 		
 		return String.valueOf(hashedCode);
 	}
+	@SuppressWarnings({ "unused", "resource" })
 	public String sentMessage()
 	{
 		
@@ -57,8 +57,8 @@ public class HandleMessage {
 	  try { 
 		///Choose if you want to A) send, B) store and C)disregard the message
 			System.out.println("Press the letters  \n "
-					+ "A) send,\n "
-					+ "B) store and \n "
+					+ "A) send, "
+					+ "B) store or "
 					+ "C) disregard the message");
 			
 			Scanner userInput = new Scanner(System.in); //Get user input
@@ -73,7 +73,6 @@ public class HandleMessage {
 				this.messageStr = Messageinput;
 				this.arrMessages.add(this.messageStr); //Send the message
 				
-				ScanMessage.close();
 				functionOutcome ="Send";
 				return functionOutcome;
 				
