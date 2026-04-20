@@ -1,24 +1,27 @@
 package userInfo;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class HandleMessage {
 	
-	private String messageStr = "";
+	private String messageStr = null;
 	private String cellNumber = "";
-	private String Cellcode = "";
-	private ArrayList<String> arrMessages; 
+	private String generatedID  ="";
+	
+	private ArrayList<String[]> List_Messages; 
 	
 	public HandleMessage(String CellNumber)
 	{
 		this.cellNumber =CellNumber;
-		this.arrMessages = new ArrayList<>();
+		this.List_Messages = new ArrayList<>();
 	}
 	public boolean checkMessageID()
 	{ 
-		
-		if(this.messageStr.length() > 15 || this.messageStr.length() ==0)
+		int messIDSize =this.messageStr.length();
+		if(messIDSize > 15 || messIDSize ==0)
 		{
 			return false; //if the message ID has more than 15 characters
 		}else
@@ -31,18 +34,25 @@ public class HandleMessage {
 	{
 		
 		//Ensures that the recipient cell number is no more than 10 characters long.
-		if(this.cellNumber.length() == 10 && this.cellNumber.startsWith("0"))
+		if(this.cellNumber.length() == 12 && this.cellNumber.startsWith("+27"))
 		{
-			return "The Number: "+ this.cellNumber + " is Stored.";
+			String message = "The Number: "+ this.cellNumber + " is Stored.";
+			System.out.println(message);
+			return message;
 		}else
 		{
-			return "Error: Incorrect Number format.";
+			String message = "Error: Incorrect Number format.";
+			System.err.println(message);
+			return message;
 		}
 
 	}
 	public String createMessageHash()
 	{
 		//The method creates and return the message Hash
+		
+		
+		String hashmassage =String.valueOf(this.generatedID)+":"+String.valueOf("");
 		
 	  int hashedCode = this.messageStr.hashCode();
 		
@@ -54,6 +64,7 @@ public class HandleMessage {
 		
 		
 		String functionOutcome ="";
+		
 	  try { 
 		///Choose if you want to A) send, B) store and C)disregard the message
 			System.out.println("Press the letters  \n "
@@ -70,33 +81,46 @@ public class HandleMessage {
 				System.out.println("Enter your message.");
 				Scanner ScanMessage = new Scanner(System.in); //Get user input
 				String Messageinput = userInput.nextLine(); //Read input
-				this.messageStr = Messageinput;
-				this.arrMessages.add(this.messageStr); //Send the message
+				messageStr = Messageinput;
 				
-				functionOutcome ="Send";
+				long messageID = ThreadLocalRandom.current()
+		                .nextLong(1_000_000_000L, 10_000_000_000L); //Randomly generate a 10 digit number
+				
+				generatedID = String.valueOf(messageID); //Convert long to string value
+				
+				//Store the values
+				
+				String[] arrayMess = new String[2];
+				arrayMess[0] =generatedID; //ID
+				arrayMess[1] =messageStr;  //Message
+				
+				List_Messages.add(arrayMess); //Send the message
+				
+				functionOutcome ="Send: "+ messageStr;
 				return functionOutcome;
 				
 			}else if(constantFormat.equals("B")) //Store the message
 			{
-				this.arrMessages.add(messageStr);
+				String[] arrayMess = new String[2];
+				arrayMess[0] =generatedID; //ID
+				arrayMess[1] =messageStr;  //Message
+				
+				this.List_Messages.add(arrayMess);
 				functionOutcome ="Store";
-				System.out.println("The message "+ this.messageStr+ " is stored.");
-				userInput.close();
+				System.out.println("The message "+ messageStr+ " is stored.");
+				
 				return functionOutcome;
-				
-				
+	
 			}else if(constantFormat.equals("C")) //Disregard the message
 			{
-			      this.messageStr = "";	
+			      messageStr = "";	
 			
 			}else
 			{
-				System.out.println("You did not enter in the correct format.");
-				functionOutcome ="Error";
-				
+				System.err.println("You did not enter in the correct format.");
+				functionOutcome ="Error";		
 			}
 			
-			userInput.close();
 		  return functionOutcome;
 	  }catch(Exception e)
 	  {
@@ -104,5 +128,37 @@ public class HandleMessage {
 	  }
 		return functionOutcome;
 	}
+	public String printMessage()
+	{
+		//Displays all the messages that where send during runtime
+		String messages ="";
+		if(List_Messages.isEmpty())
+		{
+			return "No available messages";
+		}else
+		{
+			for(String[] currentMessage : this.List_Messages) //get all the messages
+			{
+				messages +=currentMessage[1] +"\n"; //
+			}
+		}
+		
+		return messages;
+		
+	}
+	public String returnTotalMessages()
+	{
+		//Get the total number of send messages
+		if(this.List_Messages.isEmpty()) //No available messages
+		{
+			return "0";
+		}
+		else
+		{
+			String numMessages = String.valueOf(List_Messages.size()); 
+			return numMessages;
+		}
+	}
+	
 
 }

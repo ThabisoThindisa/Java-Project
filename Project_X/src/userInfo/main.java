@@ -51,9 +51,7 @@ public class main {
 					    if(message.startsWith("Successfully registered:"))
 					    {
 					    	Selectedchoice ="2";
-					    }
-					   
-			
+					    }	
 		}
 		
 		if(Selectedchoice.equals("2")) //Login
@@ -70,22 +68,23 @@ public class main {
 			String LogPass = passIn.nextLine();
 			
 		
-				boolean isLogged = user.LoginUser(LogName, LogPass);
-				if(isLogged)
+				if(user != null)
 				{
-					System.out.println("Successful login");
-				}else
-				{
-					System.out.println("Error:Unsuccessful login");
+					boolean isLogged = user.LoginUser(LogName, LogPass);
+					if(isLogged)
+					{
+						System.out.println("Successful login");
+					}else
+					{
+						System.err.println("Error:Unsuccessful login");
+					}
 				}
-			 
+	 
 		}
-		
-
 		return user;
-		
 	}
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 		boolean isRunning = true;
@@ -102,29 +101,51 @@ public class main {
 			Authorisation user = HandleAuthorisation(Selectedchoice);
 			
 			//if user is successfully logged in the start sending messages.
-			if(user.RecordLogStatus())
+			if(user != null)
 			{
-				System.out.println("\n=========== Messanger ===========");
-				System.out.println("Enter your cell number below:");
-				Scanner Cell_Input  = new Scanner(System.in);
-				String CellNumber = Cell_Input.nextLine();
-				HandleMessage UserMessanger = new HandleMessage(CellNumber);
-				String number = UserMessanger.checkRecipientCell();
-				System.out.println(number);
-				
-				//Repeat until the user wants to stop.
-				boolean isSending = true;
-				while(isSending)
+				if(user.RecordLogStatus())
 				{
 					
-					UserMessanger.sentMessage();
+					String number ="";
+					HandleMessage UserMessanger  =null;
+					do
+					{
+						System.out.println("\n=========== Messanger ===========");
+						System.out.println("Enter your cell number below:");
+						Scanner Cell_Input  = new Scanner(System.in);
+						String CellNumber = Cell_Input.nextLine();
+						UserMessanger = new HandleMessage(CellNumber);
+						number = UserMessanger.checkRecipientCell();
+					}while(number.startsWith("Error")); //Repeat until a correct cell format is entered.
 					
+					//Repeat until the user wants to stop.
+					boolean isSending = true;
 					
-					
+					while(isSending)
+					{
+						System.out.println("Press y: To enter message or"
+								+ " Press q: To quit sending messages ");
+						
+						Scanner Rotation_Input  = new Scanner(System.in);
+						String MessageOption = Rotation_Input.nextLine();
+						
+						if(MessageOption.toUpperCase().equals("Q")) //Quit sending messages
+						{
+							isSending =false;
+						}else if(MessageOption.toUpperCase().equals("Y")) //Send message
+						{
+							UserMessanger.sentMessage();
+						}else
+						{
+						  System.err.println("Error: incorrect choice format, please choose again.");
+						}
+					}				
 				}
-				
-					
 			}
+      if(user == null)
+      {
+    	  System.err.println("The user is not found!");
+      }
 			
 			if(Selectedchoice.equals("3")) //close the program
 			{
@@ -133,7 +154,7 @@ public class main {
 			}	
 		}else
 		{
-			System.out.println("Error: Incorrect input format, Try again");	
+			System.out.println("Error: Incorrect input format, please try again");	
 		}
 
 		System.out.println("===========================================");
