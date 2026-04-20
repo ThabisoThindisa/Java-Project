@@ -96,7 +96,7 @@ public class HandleMessage {
 				
 				List_Messages.add(arrayMess); //Send the message
 				
-				functionOutcome ="Send: "+ messageStr;
+				functionOutcome ="Send is send: ";
 				return functionOutcome;
 				
 			}else if(constantFormat.equals("B")) //Store the message
@@ -107,13 +107,15 @@ public class HandleMessage {
 				
 				this.List_Messages.add(arrayMess);
 				functionOutcome ="Store";
-				System.out.println("The message "+ messageStr+ " is stored.");
+				System.out.println("The message is stored.");
 				
 				return functionOutcome;
 	
 			}else if(constantFormat.equals("C")) //Disregard the message
 			{
-			      messageStr = "";	
+				functionOutcome = "Quit";
+				System.err.println("You have stopped sending messages. The system has logged you out.");
+			      return functionOutcome;
 			
 			}else
 			{
@@ -131,7 +133,8 @@ public class HandleMessage {
 	public String printMessage()
 	{
 		//Displays all the messages that where send during runtime
-		String messages ="";
+		String messages ="All the message are: \n";
+		int count = 1;
 		if(List_Messages.isEmpty())
 		{
 			return "No available messages";
@@ -139,7 +142,9 @@ public class HandleMessage {
 		{
 			for(String[] currentMessage : this.List_Messages) //get all the messages
 			{
-				messages +=currentMessage[1] +"\n"; //
+				String MessagePosition = String.valueOf(count);
+				count++;
+				messages +=MessagePosition +". "+ currentMessage[1] +"\n"; //
 			}
 		}
 		

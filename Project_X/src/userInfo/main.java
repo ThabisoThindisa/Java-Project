@@ -121,25 +121,18 @@ public class main {
 					//Repeat until the user wants to stop.
 					boolean isSending = true;
 					
-					while(isSending)
-					{
-						System.out.println("Press y: To enter message or"
-								+ " Press q: To quit sending messages ");
+					String response = "";
+						do {
+							response = UserMessanger.sentMessage();
+							System.out.println(UserMessanger.printMessage());
+							
+							if(response.equals("Quit")) //Disregard the message
+							{
+								isSending =false; //stop sending
+							}
 						
-						Scanner Rotation_Input  = new Scanner(System.in);
-						String MessageOption = Rotation_Input.nextLine();
-						
-						if(MessageOption.toUpperCase().equals("Q")) //Quit sending messages
-						{
-							isSending =false;
-						}else if(MessageOption.toUpperCase().equals("Y")) //Send message
-						{
-							UserMessanger.sentMessage();
-						}else
-						{
-						  System.err.println("Error: incorrect choice format, please choose again.");
-						}
-					}				
+						}while(isSending); //continue sending messages
+								
 				}
 			}
       if(user == null)
