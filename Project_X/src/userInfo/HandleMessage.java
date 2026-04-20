@@ -52,7 +52,7 @@ public class HandleMessage {
 		//The method creates and return the message Hash
 		
 		
-		String hashmassage =String.valueOf(this.generatedID)+":"+String.valueOf("");
+		String hashmassage =String.valueOf(generatedID)+":"+String.valueOf("");
 		
 	  int hashedCode = this.messageStr.hashCode();
 		
@@ -156,12 +156,12 @@ public class HandleMessage {
 		//Get the total number of send messages
 		if(this.List_Messages.isEmpty()) //No available messages
 		{
-			return "0";
+			return "The total number of messages stored are: 0";
 		}
 		else
 		{
 			String numMessages = String.valueOf(List_Messages.size()); 
-			return numMessages;
+			return "The total number of messages stored are: " +numMessages;
 		}
 	}
 	

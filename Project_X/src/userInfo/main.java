@@ -124,8 +124,11 @@ public class main {
 					String response = "";
 						do {
 							response = UserMessanger.sentMessage();
-							System.out.println(UserMessanger.printMessage());
-							
+							if(response.equals("Store")) //Store the message
+							{
+								System.out.println(UserMessanger.returnTotalMessages());
+								System.out.println(UserMessanger.printMessage());
+							}
 							if(response.equals("Quit")) //Disregard the message
 							{
 								isSending =false; //stop sending
